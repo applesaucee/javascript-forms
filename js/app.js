@@ -13,6 +13,17 @@
 function onReady() {
     var standings = ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Super Senior!'];
 
+    var elem = document.getElementById("standing");
+    for (var i = 0; i < standings.length; i++) {
+        var opt = document.createElement("option");
+        opt.value = standings[i];
+        var text = document.createTextNode(standings[i]);
+        opt.appendChild(text);
+        elem.appendChild(opt);
+    }
+
+    var ourform = document.getElementById("person-form");
+    ourform.addEventListener('submit', onSubmit);
 } //onReady()
 
 /* onSubmit()
@@ -23,12 +34,12 @@ function onReady() {
  * */
 function onSubmit(evt) {
     var valid = validateForm(this);
-
+    console.log("onSubmit worked!!!");
     //if the form is invalid and the event object has a method called preventDefault,
     //call it to stop the form from being submitted to the server
     //this method is now part of the standard, but it's new, so older browsers
     //will not expose this method on the event object
-    if (!valid && evt.preventDefault) {
+    if (!valid && evt.preventDefault) {ou
         evt.preventDefault();
     }
 
@@ -51,6 +62,8 @@ function onSubmit(evt) {
 function validateForm(form) {
     var requiredFields = ['firstName', 'lastName', 'standing', 'age'];
 
+    requiredFields.forEach(validateRequiredField, form);
+    //return true;
 } //validateForm()
 
 /* validateRequiredField()
@@ -59,6 +72,13 @@ function validateForm(form) {
 * */
 function validateRequiredField(field) {
 
+    if (0 == this[field].value.trim().length) {
+        this[field].className = 'invalid-field form-control';
+        return false;
+    } else {
+        this[field].className = 'form-control';
+        return true;
+    }
 } //validateRequiredField()
 
 document.addEventListener('DOMContentLoaded', onReady);
