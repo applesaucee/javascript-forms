@@ -39,7 +39,7 @@ function onSubmit(evt) {
     //call it to stop the form from being submitted to the server
     //this method is now part of the standard, but it's new, so older browsers
     //will not expose this method on the event object
-    if (!valid && evt.preventDefault) {ou
+    if (!valid && evt.preventDefault) {
         evt.preventDefault();
     }
 
@@ -61,8 +61,14 @@ function onSubmit(evt) {
 * */
 function validateForm(form) {
     var requiredFields = ['firstName', 'lastName', 'standing', 'age'];
+    var idx;
+    var valid = true;
 
-    requiredFields.forEach(validateRequiredField, form);
+    for (idx = 0; idx < requiredFields.length; idx++) {
+        valid &= validateRequiredField(requiredFields[idx], form);
+    }
+
+    return valid;
     //return true;
 } //validateForm()
 
@@ -70,13 +76,13 @@ function validateForm(form) {
 * This function validates a field that is required. If the field does not have a value, or has only spaces,
 * it will mark the field as invalid and return false. Otherwise it will return true.
 * */
-function validateRequiredField(field) {
+function validateRequiredField(field, form) {
 
-    if (0 == this[field].value.trim().length) {
-        this[field].className = 'invalid-field form-control';
+    if (0 == form[field].value.trim().length) {
+        form[field].className = 'invalid-field form-control';
         return false;
     } else {
-        this[field].className = 'form-control';
+        form[field].className = 'form-control';
         return true;
     }
 } //validateRequiredField()
